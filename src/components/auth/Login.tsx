@@ -19,7 +19,7 @@ export const Login = () => {
     try {
       setLoading(true);
       await login(email, password);
-      navigate("/");
+      navigate("/dashboard");
     } catch (e: any) {
       alert(e.message);
     } finally {
@@ -34,7 +34,6 @@ export const Login = () => {
         <h2 className="text-2xl font-bold text-center text-gray-800">
           Вход в аккаунт
         </h2>
-
         <div className="space-y-4">
           <input
             type="email"
