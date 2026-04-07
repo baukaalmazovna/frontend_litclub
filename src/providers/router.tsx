@@ -7,6 +7,8 @@ import { MainDashboard } from "../components/dashboard/MainDashboard";
 import { AdminDashboard } from "../components/admin/AdminDashboard";
 import { BooksList } from "../components/admin/books/list/BooksList";
 import { ProtectedRoute } from "../components/protected/ProtectedRoute";
+import { Profile } from "../components/user/Profile";
+import { Layout } from "../components/layout/Layout";
 
 export const router = createBrowserRouter([
   { path: "/", element: <Main /> },
@@ -14,12 +16,22 @@ export const router = createBrowserRouter([
   { path: "/admin_login", element: <AdminLogin /> },
 
   {
-    path: "/dashboard",
+    path: "/",
     element: (
       <ProtectedRoute allowedRoles={['reader', 'author']}>
-        <MainDashboard />
+        <Layout />
       </ProtectedRoute>
     ),
+    children: [
+      {
+        path: "dashboard",
+        element: <MainDashboard />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+    ],
   },
   {
     path: "/admin_dashboard",

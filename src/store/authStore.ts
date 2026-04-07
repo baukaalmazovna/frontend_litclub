@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { api } from "../api/api";
+import { authApi } from "../api/authApi";
 
 interface User {
   id: string;
@@ -21,12 +21,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   login: async (email, password) => {
     try {
-      const res = await api.post("/users/login", {
-        email,
-        password,
-      });
-
-      const { access_token, user } = res.data;
+      const { access_token, user } = await authApi.login(email, password);
 
       // 💾 сохраняем
       localStorage.setItem("token", access_token);
