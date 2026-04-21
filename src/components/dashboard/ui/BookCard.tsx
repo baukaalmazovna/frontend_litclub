@@ -12,10 +12,10 @@ export const BookCard = ({ book }: Props) => {
       <h3 className="font-semibold">{book.title}</h3>
 
       <p className="text-sm text-gray-500">
-        {book.author.first_name} {book.author.last_name}
+        {book.authors?.[0]?.first_name} {book.authors?.[0]?.last_name}
       </p>
 
-      <p className="text-xs text-gray-400">{book.genre.name}</p>
+      <p className="text-xs text-gray-400">{book.genres?.[0]?.name}</p>
 
       {book.year && (
         <p className="text-xs text-gray-400">{book.year}</p>

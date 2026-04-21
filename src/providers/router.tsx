@@ -9,44 +9,45 @@ import { BooksList } from "../components/admin/books/list/BooksList";
 import { ProtectedRoute } from "../components/protected/ProtectedRoute";
 import { Profile } from "../components/user/Profile";
 import { Layout } from "../components/layout/Layout";
+import { Catalog } from "../pages/Catalog";
+import { Events } from "../pages/Events";
+import { ReadingClub } from "../pages/ReadingClubs"; 
+import { BookDetails } from "../pages/BookDetails";
+import { Exchange } from "../pages/Exchange";
+
 
 export const router = createBrowserRouter([
   { path: "/", element: <Main /> },
   { path: "/login", element: <Login /> },
   { path: "/admin_login", element: <AdminLogin /> },
+  { path: "/catalog", element: <Catalog /> },
+  { path: "/events", element: <Events /> },
+  { path: "/club", element: <ReadingClub /> }, 
+  { path: "/book/:id", element: <BookDetails /> },
+  { path: "/exchange", element: <Exchange /> },
 
   {
     path: "/",
     element: (
-      <ProtectedRoute allowedRoles={['reader', 'author']}>
+      <ProtectedRoute>
         <Layout />
       </ProtectedRoute>
     ),
     children: [
-      {
-        path: "dashboard",
-        element: <MainDashboard />,
-      },
-      {
-        path: "profile",
-        element: <Profile />,
-      },
+      { path: "dashboard", element: <MainDashboard /> },
+      { path: "profile", element: <Profile /> },
     ],
   },
+
   {
-    path: "/admin_dashboard",
+    path: "/admin",
     element: (
-      <ProtectedRoute allowedRoles={['admin']}>
+      <ProtectedRoute>
         <AdminDashboard />
       </ProtectedRoute>
     ),
-  },
-  {
-    path: "/books_list",
-    element: (
-      <ProtectedRoute allowedRoles={['admin']}>
-        <BooksList />
-      </ProtectedRoute>
-    ),
+    children: [
+      { path: "books", element: <Profile /> },
+    ],
   },
 ]);

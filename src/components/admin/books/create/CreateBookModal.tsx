@@ -29,9 +29,14 @@ export const CreateBookModal = ({ isOpen, onClose }: Props) => {
     const { publishers, isLoading: isPublishersLoading, error: publishersError, fetchPublishers } = usePublisherStore();
     const { authors, isLoading: isAuthorsLoading, error: authorsError, fetchAuthors } = useAuthorStore();
 
-    useEffect(() => { fetchGenres(); }, [fetchGenres]);
-    useEffect(() => { fetchPublishers(); }, [fetchPublishers]);
-    useEffect(() => { fetchAuthors(); }, [fetchAuthors]);
+    useEffect(() => {
+        if (isOpen) {
+            fetchGenres()
+            fetchPublishers();
+            fetchAuthors();
+        }
+    }, [isOpen]);
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });

@@ -8,7 +8,10 @@ interface BookState {
   error: string | null;
 
   fetchBooks: () => Promise<void>;
+  fetchBookById: (id: number) => Promise<Book>;
   createBook: (data: FormData) => Promise<Book>;
+  updateBook: (id: number, data: Partial<Book>) => Promise<void>;
+  deleteBook: (id: number) => Promise<void>;
   setBooks: (books: Book[]) => void;
 }
 
@@ -27,17 +30,27 @@ export const useBookStore = create<BookState>((set, get) => ({
     }
   },
 
-  createBook: async (formData) => {
-    const res = await fetch("http://localhost:8000/books/", {
-      method: "POST",
-      body: formData,
-    });
-    const data = await res.json();
-    // добавляем базовый URL для book_avatar, чтобы сразу рендерить на фронте
-    data.book_avatar = `http://localhost:8000${data.book_avatar}`;
-    // обновляем состояние сразу
+  fetchBookById: async (id: number) => {
+    const data = await bookApi.getById(id);
+    return data;
+  },
+
+  createBook: async (formData: FormData) => {
+    const data = await bookApi.create(formData);
     set({ books: [...get().books, data] });
-    return data; // 🔹 возвращаем объект книги
+    return data;
+  },
+
+  updateBook: async (id: number, bookData: Partial<Book>) => {
+    const updated = await bookApi.update(id, bookData);
+    set({
+      books: get().books.map((b) => (b.id === id ? updated : b)),
+    });
+  },
+
+  deleteBook: async (id: number) => {
+    await bookApi.delete(id);
+    set({ books: get().books.filter((b) => b.id !== id) });
   },
 
   setBooks: (books: Book[]) => set({ books }),
